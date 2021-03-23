@@ -112,7 +112,10 @@ class HttpRestRequest(HttpRequest):
     def __init__(self, httprequest):
         super(HttpRestRequest, self).__init__(httprequest)
         if self.httprequest.mimetype == "application/json":
+            _logger.info("Enter patched constructor")
             data = self.httprequest.get_data().decode(self.httprequest.charset)
+            if data[0:5] == "body=":
+                data = data.replace("body=", "")
             self.params = json.loads(data)
         else:
             # We reparse the query_string in order to handle data structure
