@@ -115,7 +115,10 @@ class HttpRestRequest(HttpRequest):
     def __init__(self, httprequest):
         super(HttpRestRequest, self).__init__(httprequest)
         if self.httprequest.mimetype == "application/json":
+            _logger.info("Enter patched constructor")
             data = self.httprequest.get_data().decode(self.httprequest.charset)
+            if data[0:5] == "body=":
+                data = data.replace("body=", "")
             try:
                 self.params = json.loads(data)
             except ValueError as e:
