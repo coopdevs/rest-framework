@@ -139,6 +139,7 @@ class RestController(Controller, metaclass=RestControllerType):
         return True
 
     def _process_method(self, service_name, method_name, *args, params=None):
+        _logger.debug("args: {}, params: {}".format(args, str(params)))
         self._validate_method_name(method_name)
         with self.service_component(service_name) as service:
             result = service.dispatch(method_name, *args, params=params)
